@@ -86,9 +86,15 @@ NS_ASSUME_NONNULL_BEGIN
                                description:nil];
       [strongSelf->_session failExternalUserAgentFlowWithError:safariError];
     }
-  }];
-      
+      }];
+
   authenticationVC.presentationContextProvider = self;
+#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 130000
+  if (@available(iOS 13.0, *)) {
+    authenticationVC.prefersEphemeralWebBrowserSession = YES;
+  }
+#endif
+
   _webAuthenticationVC = authenticationVC;
   openedUserAgent = [authenticationVC start];
 
